@@ -7,9 +7,9 @@ from post import post
 
 def set_info():
     url = 'https://jinshuju.net/f/kDiOo6'
-    id = '202021010335'
-    pw = 'yl199910220'
-    name = '杨柳'
+    id = 'xxxxxxx' # 学号
+    pw = 'xxxxxxxxxxx'
+    name = 'xx'
     path = 'D:/Drivers(not delete)/chromedriver.exe'
     option = 'post'
     info = {'url':url, 'id':id, 'password':pw, 'name':name, 'path':path, 'option':option}

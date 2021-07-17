@@ -2,7 +2,7 @@ import requests
 import json
 
 def post(flag=0):
-    token = '4ccc522fce114914bc12f9f4796afccc' #在pushpush网站中可以找到
+    token = 'xxxxxxxxxxxxxxxxxx' #在pushpush网站中可以找到
     title= '晚点名' #改成你要的标题内容
     if flag:
         content = '晚点名已点' #改成你要的正文内容

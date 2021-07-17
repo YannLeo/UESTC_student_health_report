@@ -4,11 +4,11 @@ from email.header import Header
 
 def email_(flag=0):
     mail_host="smtp.qq.com"#设置的邮件服务器host必须是发送邮箱的服务器，与接收邮箱无关。
-    mail_user="1070032777"#qq邮箱登陆名
-    mail_pass="wwfqrvngyibvbgaf" #开启stmp服务的时候并设置的授权码，注意！不是QQ密码。
+    mail_user="xxxxxxxx"#qq邮箱登陆名
+    mail_pass="xxxxxxxxxx" #开启stmp服务的时候并设置的授权码，注意！不是QQ密码。
   
-    sender='1070032777@qq.com'#发送方qq邮箱
-    receivers=['yangliu991022@163.com']#接收方qq邮箱
+    sender='xxxxxxxxxx'#发送方qq邮箱
+    receivers=['xxxxxxxxxxxx']#接收方qq邮箱
   
     message=MIMEText('晚点名','plain','utf-8')
     message['From']=Header("yl",'utf-8') #设置显示在邮件里的发件人
