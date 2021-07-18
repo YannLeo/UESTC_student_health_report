@@ -15,10 +15,11 @@ from selenium.webdriver.support import expected_conditions
 
 def set_info():
     url = 'https://idas.uestc.edu.cn/authserver/login?service=https%3A%2F%2Feportal.uestc.edu.cn%3A443%2Fjkdkapp%2Fsys%2FlwReportEpidemicStu%2Findex.do%3Fclient%3Dmobile'
-    id = 'xxxxxxxxxxx' # 学号
-    pw = 'xxxxxxxxx' # 密码
-    name = 'xx' # 姓名
+    id = 'xxxxxxxxxxxxx' # 学号
+    pw = 'xxxxxxxxxxxx' # 信息门户密码
+    name = 'xxxxxxxxxxxx' # 姓名
     path = 'D:/Drivers(not delete)/geckodriver.exe'
+    # path = 'D:/Drivers(not delete)/chromedriver.exe'
     option = 'post'
     kind = '打卡'
     info = {'url':url, 'id':id, 'password':pw, 'name':name, 'path':path, 'option':option, 'kind':kind}
@@ -27,6 +28,7 @@ def set_info():
 
 def main(info):
     driver = webdriver.Firefox(executable_path = info['path'])
+    # driver = webdriver.Chrome(executable_path = info['path'])
     driver.get(info['url'])
     time.sleep(1)
     driver.find_element_by_xpath('//*[@id="username"]').send_keys(info['id'])
@@ -52,7 +54,7 @@ def main(info):
         if x == 0:
             x = get_pos_backup(target, template)
         print(x)
-        track = get_track(x*240/500)
+        track = get_tracks(x*230/500)
         flag = slide(driver, track)
     
     # result=WebDriverWait(driver,10).until(expected_conditions.element_to_be_clickable(driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[5]')))
@@ -68,54 +70,28 @@ def main(info):
 
     return 1
 
-def get_track(distance):
-        '''
-        拿到移动轨迹，模仿人的滑动行为，先匀加速后匀减速
-        匀变速运动基本公式：
-        v=v0+at
-        s=v0t+(1/2)at²
-        v²-v0²=2as
 
-        :param distance: 需要移动的距离
-        :return: 存放每0.2秒移动的距离
-        '''
-        # 初速度
-        v=0
-        # 单位时间为0.2s来统计轨迹，轨迹即0.2内的位移
-        t=0.3
-        # 位移/轨迹列表，列表内的一个元素代表0.2s的位移
-        tracks=[]
-        # 当前的位移
-        current=0
-        # 到达mid值开始减速
-        mid=distance * 5/8
+def get_tracks(distance):
+    distance = round(distance)
+    distance += 10
+    v = 0
+    t = 0.2
+    forward_tracks = []
+    current = 0
+    mid = distance * 3 / 5  #减速阀值
+    while current < distance:
+        if current < mid:
+            a = 7  #加速度为+2
+        else:
+            a = -3  #加速度-3
+        s = v * t + 0.5 * a * (t ** 2)
+        v = v + a * t
+        current += s
+        forward_tracks.append(round(s))
 
-        distance += 10  # 先滑过一点，最后再反着滑动回来
-        # a = random.randint(1,3)
-        while current < distance:
-            if current < mid:
-                # 加速度越小，单位时间的位移越小,模拟的轨迹就越多越详细
-                a = random.randint(1,3)  # 加速运动
-            else:
-                a = -random.randint(2,4) # 减速运动
+    back_tracks = [-3, -2, -2, -1, -1, -1]
+    return forward_tracks + back_tracks
 
-            # 初速度
-            v0 = v
-            # 0.2秒时间内的位移
-            s = v0*t+0.5*a*(t**2)
-            # 当前的位置
-            current += s
-            # 添加到轨迹列表
-            tracks.append(round(s))
-
-            # 速度已经达到v,该速度作为下次的初速度
-            v= v0+a*t
-
-        # 反着滑动到大概准确位置
-        for i in range(4):
-           tracks.append(-random.randint(1,3))
-        # random.shuffle(tracks)
-        return tracks
 
 
 def slide(driver, tracks):
