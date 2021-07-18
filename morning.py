@@ -3,9 +3,7 @@ from selenium import webdriver
 import math
 from email_ import email_
 from post import post
-import requests
 import base64
-from PIL import Image
 import cv2
 import numpy as np
 import random
