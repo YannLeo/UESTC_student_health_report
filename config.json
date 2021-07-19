@@ -1,0 +1,22 @@
+{
+    "base":{
+        "id": "XXXXXXXXXXXXXXXX",
+        "password": "xxxxxxxxxxxxxxxx",
+        "name": "xxx",
+        "path": "./driver/geckodriver.exe",
+        "option": "post"
+    },
+
+    "post":{
+        "token": "xxxxxxxxxxxxx"
+    },
+
+    "email":{
+        "mail_user": "xxxxxxxx",
+        "mail_pass": "xxxxxxxxxx",
+        "sender": "xxxxxxxxxxxxx",
+        "receiver": "xxxxxxxxxx",
+        "sender_name": "xx"
+    }
+    
+}
