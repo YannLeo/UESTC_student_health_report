@@ -1,0 +1,5 @@
+numpy==1.20.3
+opencv_python==4.5.2.52
+selenium==3.141.0
+requests==2.22.0
+APScheduler==3.7.0
