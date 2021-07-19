@@ -11,23 +11,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 
 
-def set_info():
-    url = 'https://idas.uestc.edu.cn/authserver/login?service=https%3A%2F%2Feportal.uestc.edu.cn%3A443%2Fjkdkapp%2Fsys%2FlwReportEpidemicStu%2Findex.do%3Fclient%3Dmobile'
-    id = 'xxxxxxxxxxxxx' # 学号
-    pw = 'xxxxxxxxxxxx' # 信息门户密码
-    name = 'xxxxxxxxxxxx' # 姓名
-    path = 'D:/Drivers(not delete)/geckodriver.exe'
-    # path = 'D:/Drivers(not delete)/chromedriver.exe'
-    option = 'post'
-    kind = '打卡'
-    info = {'url':url, 'id':id, 'password':pw, 'name':name, 'path':path, 'option':option, 'kind':kind}
-    return info
-
-
 def main(info):
-    driver = webdriver.Firefox(executable_path = info['path'])
-    # driver = webdriver.Chrome(executable_path = info['path'])
-    driver.get(info['url'])
+    firefoxOptions = webdriver.FirefoxOptions()
+    firefoxOptions.add_argument("--headless")
+    driver = webdriver.Firefox(executable_path = info['path'], options=firefoxOptions)
+    driver.get('https://idas.uestc.edu.cn/authserver/login?service=https%3A%2F%2Feportal.uestc.edu.cn%3A443%2Fjkdkapp%2Fsys%2FlwReportEpidemicStu%2Findex.do%3Fclient%3Dmobile')
     time.sleep(1)
     driver.find_element_by_xpath('//*[@id="username"]').send_keys(info['id'])
     time.sleep(1)
@@ -42,16 +30,16 @@ def main(info):
         captcha_foreground_url = driver.find_element_by_xpath('//*[@id="img2"]').get_attribute('src')
         background, foreground = captcha_background_url.split(',')[1], captcha_foreground_url.split(',')[1]
         background, foreground = base64.b64decode(background), base64.b64decode(foreground)
-        with open('./image/background.png', 'wb') as f:
+        with open('./background.png', 'wb') as f:
             f.write(background)
-        with open('./image/foreground.png', 'wb') as f:
+        with open('./foreground.png', 'wb') as f:
             f.write(foreground)
-        target = cv2.imread('./image/foreground.png')
-        template = cv2.imread('./image/background.png', 0)
+        target = cv2.imread('./foreground.png')
+        template = cv2.imread('./background.png', 0)
         x = get_pos(template)
         if x == 0:
             x = get_pos_backup(target, template)
-        print(x)
+        # print(x)
         track = get_tracks(x*230/500)
         flag = slide(driver, track)
     
@@ -76,12 +64,12 @@ def get_tracks(distance):
     t = 0.2
     forward_tracks = []
     current = 0
-    mid = distance * 3 / 5  #减速阀值
+    mid = distance * 3 / 5
     while current < distance:
         if current < mid:
-            a = 7  #加速度为+2
+            a = 7
         else:
-            a = -3  #加速度-3
+            a = -3
         s = v * t + 0.5 * a * (t ** 2)
         v = v + a * t
         current += s
@@ -93,21 +81,16 @@ def get_tracks(distance):
 
 
 def slide(driver, tracks):
-
     former = driver.current_url
     slider =driver.find_element_by_xpath('/html/body/div[1]/div[2]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div[2]/div')
-    # 鼠标点击并按住不松
     webdriver.ActionChains(driver).click_and_hold(slider).perform()
-    # 让鼠标随机往下移动一段距离
     webdriver.ActionChains(driver).move_by_offset(xoffset=0, yoffset=100).perform()
     time.sleep(0.15)
     for item in tracks:
         webdriver.ActionChains(driver).move_by_offset(xoffset=item, yoffset=random.randint(-2,2)).perform()
-    # 稳定一秒再松开
     time.sleep(0.5)
     webdriver.ActionChains(driver).release(slider).perform()
     time.sleep(2)
-    # 随机拿开鼠标
     later = driver.current_url
     if former == later:
         return 0
@@ -142,22 +125,21 @@ def get_pos_backup(target, template):
     x, y = np.unravel_index(result.argmax(), result.shape)  # 通过np转化为数值，就是坐标
     return y
 
-def morning():
-    info = set_info()
-    start = time.perf_counter()
+def morning(info):
+    # start = time.perf_counter()
     flag = 0
     # flag = main(info)
     try:
-        flag = main(info)
-        end = time.perf_counter()
-        print("The opration costs {} senconds.".format(math.ceil(end-start)))
+        flag = main(info['base'])
+        # end = time.perf_counter()
+        # print("The opration costs {} senconds.".format(math.ceil(end-start)))
     except:
         pass
     finally:
-        if info['option'] == 'post':
-            post(info['kind'], flag)
+        if info['base']['option'] == 'post':
+            post(info['post'], action='morning', flag=flag)
         else:
-            email_(info['kind'], flag)
+            email_(info['email'], action='morning', flag=flag)
 
 if __name__ == '__main__':
     morning()
