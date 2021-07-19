@@ -18,7 +18,9 @@ def getINFO():
 if __name__ == '__main__':
     info = getINFO()
     scheduler = BlockingScheduler()
-    scheduler.add_job(morning.morning, 'cron', hour=0, minute=10, args=[info])
-    scheduler.add_job(evening.evening, 'cron', hour=17, minute=5, args=[info])
+    time_morning = info['time']['morning']
+    time_evening = info['time']['evening']
+    scheduler.add_job(morning.morning, 'cron', hour=time_morning['hour'], minute=time_morning['minute'], args=[info])
+    scheduler.add_job(evening.evening, 'cron', hour=time_evening['hour'], minute=time_evening['minute'], args=[info])
     scheduler.start()
     

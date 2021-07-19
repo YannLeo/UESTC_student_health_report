@@ -17,6 +17,16 @@
         "sender": "xxxxxxxxxxxxx",
         "receiver": "xxxxxxxxxx",
         "sender_name": "xx"
-    }
+    },
     
+    "time":{
+        "morning":{
+            "hour": 0,
+            "minute": 15
+        },
+        "evening":{
+            "hour": 17,
+            "minute": 5
+        }
+    }
 }
