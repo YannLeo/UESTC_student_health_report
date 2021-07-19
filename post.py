@@ -1,16 +1,18 @@
 import requests
 import json
 
-def post(flag=0):
-    token = 'xxxxxxxxxxxxxxxxxx' #在pushpush网站中可以找到
-    title= '晚点名' #改成你要的标题内容
+def post(info:dict, action:str, flag=0):
+    if action == 'evening':
+        title = '晚点名'
+    elif action == 'morning':
+        title = '打卡'
     if flag:
-        content = '晚点名已点' #改成你要的正文内容
+        content = title + '已完成'
     else:
-        content = 'error 晚点名出错'
+        content = 'error-' + title + '出错，请您自己手动' + title + '，并告知程序发布者代码有bug :-)'
     url = 'http://pushplus.hxtrip.com/send'
     data = {
-        "token":token,
+        "token":info['token'],
         "title":title,
         "content":content
     }

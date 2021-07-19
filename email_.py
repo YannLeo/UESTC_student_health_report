@@ -2,34 +2,31 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
-def email_(flag=0):
-    mail_host="smtp.qq.com"#设置的邮件服务器host必须是发送邮箱的服务器，与接收邮箱无关。
-    mail_user="xxxxxxxx"#qq邮箱登陆名
-    mail_pass="xxxxxxxxxx" #开启stmp服务的时候并设置的授权码，注意！不是QQ密码。
+def email_(info:dict, action:str, flag=0):
+    receivers=[info['receiver']]
+    if action == 'evening':
+        title = '晚点名'
+    elif action == 'morning':
+        title = '打卡'
   
-    sender='xxxxxxxxxx'#发送方qq邮箱
-    receivers=['xxxxxxxxxxxx']#接收方qq邮箱
-  
-    message=MIMEText('晚点名','plain','utf-8')
-    message['From']=Header("yl",'utf-8') #设置显示在邮件里的发件人
-    message['To']=Header("yl",'utf-8') #设置显示在邮件里的收件人
+    message=MIMEText(title, 'plain', 'utf-8')
+    message['From']=Header(info['sender_name'],'utf-8')
+    message['To']=Header(info['sender_name'],'utf-8')
 
     if flag:
-        subject = '晚点名已点'
+        subject = title + '已完成'
     else:
-        subject = '晚点名点名出错'
+        subject = 'error-' + title + '出错，请您自己手动' + title + '，并告知程序发布者代码有bug :-)'
     message['Subject']=Header(subject,'utf-8') #设置主题和格式
   
     try:
-        smtpobj=smtplib.SMTP_SSL(mail_host,465) #本地如果有本地服务器，则用localhost ,默认端口２５,腾讯的（端口465或587）
+        smtpobj=smtplib.SMTP_SSL('smpt.qq.com', 465) #本地如果有本地服务器，则用localhost ,默认端口25,腾讯的（端口465或587）
         smtpobj.set_debuglevel(1)
-        smtpobj.login(mail_user,mail_pass)#登陆QQ邮箱服务器
-        smtpobj.sendmail(sender,receivers,message.as_string())#发送邮件
-        print("邮件发送成功")
-        smtpobj.quit()#退出
-    except smtplib.SMTPException as e :
-        print("Error:无法发送邮件")
-        print(e)
+        smtpobj.login(info['mail_user'], info['mail_pass'])
+        smtpobj.sendmail(info['sender'], receivers, message.as_string())
+        smtpobj.quit()
+    except smtplib.SMTPException as e:
+        pass
 
 if __name__ == '__main__':
     email_()
