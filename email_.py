@@ -17,10 +17,10 @@ def email_(info:dict, action:str, flag=0):
         subject = title + '已完成'
     else:
         subject = 'error-' + title + '出错，请您自己手动' + title + '，并告知程序发布者代码有bug :-)'
-    message['Subject']=Header(subject,'utf-8') #设置主题和格式
+    message['Subject']=Header(subject,'utf-8')
   
     try:
-        smtpobj=smtplib.SMTP_SSL('smpt.qq.com', 465) #本地如果有本地服务器，则用localhost ,默认端口25,腾讯的（端口465或587）
+        smtpobj=smtplib.SMTP_SSL(info['mail_realm_name'], info['mail_port'])
         smtpobj.set_debuglevel(1)
         smtpobj.login(info['mail_user'], info['mail_pass'])
         smtpobj.sendmail(info['sender'], receivers, message.as_string())
