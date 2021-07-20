@@ -57,9 +57,10 @@ UESTC_student_clock_in/
 ├── (foreground.png) 程序运行中生成的验证码前景图
 ```
 ## Step
+- 使用 ./driver/Firefox-latest.exe 安装火狐浏览器
 - 下载 [*Anaconda*](https://www.anaconda.com/) 或 [*python*](https://www.python.org/)
-- 检查 python 环境是否安装以上包。若没有，可在本项目路径下运行 ```pip install -r requirements.txt```
-- 上[这个网站](http://pushplus.hxtrip.com/)，微信扫码登陆，并获得token
+- 检查 *python* 环境是否安装以上包。若没有，可在本项目路径下运行 ```pip install -r requirements.txt```
+- 上[这个网站](http://pushplus.hxtrip.com/)，微信扫码登陆，并获得 token
 - 在 json 文件中修改配置，具体步骤见 [Config setting step 章节](#config-setting)
 - 将 *main.py* 后缀改为 *pyw* ，双击运行，挂在后台
 
