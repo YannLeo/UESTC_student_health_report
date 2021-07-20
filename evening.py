@@ -29,6 +29,7 @@ def main(info:dict):
     time.sleep(10)
     driver.find_element_by_xpath('//*[@id="root"]/div/form/div[5]/div/button').click()
     time.sleep(2)
+    driver.quit()
     return True
 
 
