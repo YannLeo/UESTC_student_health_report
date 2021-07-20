@@ -12,7 +12,7 @@
     },
 
     "email":{
-        "mail_realm_name": "smpt.qq.com",
+        "mail_realm_name": "smtp.qq.com",
         "mail_port": 465,
         "mail_user": "xxxxxxxx",
         "mail_pass": "xxxxxxxxxx",
