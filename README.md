@@ -45,7 +45,8 @@ UESTC_student_clock_in/
 ├── driver/
 ├────── Firefox-latest.exe 火狐浏览器安装包
 ├────── geckodriver.exe    火狐浏览器驱动
-├── config.json      配置文件，通过修改json文件来实现信息配置
+├── config/
+├────── config.json      配置文件，通过修改json文件来实现信息配置
 ├── email_.py        发送邮件
 ├── evening.py       晚点名
 ├── main.py          定时调用方法
@@ -61,7 +62,7 @@ UESTC_student_clock_in/
 - 下载 [*Anaconda*](https://www.anaconda.com/) 或 [*python*](https://www.python.org/)
 - 检查 *python* 环境是否安装以上包。若没有，可在本项目路径下运行 ```pip install -r requirements.txt```
 - 上[这个网站](http://pushplus.hxtrip.com/)，微信扫码登陆，并获得 token
-- 在 json 文件中修改配置，具体步骤见 [Config setting step 章节](#config-setting)
+- 在 config文件夹下 json 文件中修改配置或增加新的 json 文件，具体步骤见 [Config setting step 章节](#config-setting)
 - 将 *main.py* 后缀改为 *pyw* ，双击运行，挂在后台
 
 ## <span id="config-setting">Config setting step</span>
